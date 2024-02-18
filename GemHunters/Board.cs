@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace gem_hunters
+﻿namespace GemHunters
 {
     public class Board
     {
@@ -160,7 +153,7 @@ namespace gem_hunters
             if (Grid[position.X, position.Y].Occupant == "G")
             {
                 player.GemCount++;
-                Console.WriteLine($"\nYeah! {player.Name} got a gem!");
+                Console.WriteLine($"\nYeah! {player.Name} got a gem.");
             }
             Grid[position.X, position.Y].Occupant = player.Alias;
         }

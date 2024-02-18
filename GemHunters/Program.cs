@@ -1,7 +1,6 @@
-﻿using gem_hunters;
-using System;
+﻿using GemHunters;
 
-class GemHunters
+class Program
 {
     // Main Method 
     static public void Main(string[] args)
