@@ -60,6 +60,7 @@ namespace gem_hunters
                 }
 
                 playerDirections = playerDirections.ToUpper();
+                
                 // Check if the player's move is valid
                 bool isValidPosition = Board.IsValidMove(CurrentPlayerTurn, playerDirections);
                 if (isValidPosition)
@@ -137,7 +138,6 @@ namespace gem_hunters
         /// </summary>
         public void AnnounceWinner()
         {
-
             Console.WriteLine("\n****** Game Over ******");
 
             // Display the number of gems collected by each player
