@@ -11,10 +11,10 @@ namespace gem_hunters
     {
         // Player's name
         public string Name { get; set; }
-
+        // Player's alias name(e.g P1 or P2)
+        public string Alias { get; set; }
         // Player's position on the board
         public Position Position { get; set; }
-
         // Number of gems collected by the player
         public int GemCount { get; set; }
 
@@ -23,9 +23,10 @@ namespace gem_hunters
         /// </summary>
         /// <param name="name">Player name</param>
         /// <param name="position">Initial position of player</param>
-        public Player(string name, Position position)
+        public Player(string name, string alias, Position position)
         {
             Name = name;
+            Alias = alias;
             Position = position;
             GemCount = 0; // Initialize gem count to zero
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,14 +15,18 @@ namespace gem_hunters
         public Player CurrentPlayerTurn { get; set; }
         public int TotalTurns { get; set; }
 
-        // Constructor initializes the game
-        public Game()
+        /// <summary>
+        /// Constructor initializes the game
+        /// </summary>
+        /// <param name="player1Name">Player 1's actual name</param>
+        /// <param name="player2Name">Player 2's actual name</param>
+        public Game(string player1Name, string player2Name)
         {
             // Initialize Player 1 at position (0, 0)
-            Player1 = new Player("P1", new Position(0, 0));
+            Player1 = new Player(player1Name, "P1", new Position(0, 0));
 
             // Initialize Player 2 at position (5, 5)
-            Player2 = new Player("P2", new Position(5, 5));
+            Player2 = new Player(player2Name, "P2", new Position(5, 5));
 
             // Initialize the total number of turns to 0
             TotalTurns = 0;
@@ -48,7 +53,13 @@ namespace gem_hunters
 
                 // Read player's input for movement directions
                 string playerDirections = Console.ReadLine() ?? string.Empty;
+                while (!IsValidUserInput(playerDirections))
+                {
+                    Console.Write("\nInvalid user input. Please enter (U-Up, D-Down, L-Left, R-Right): ");
+                    playerDirections = Console.ReadLine() ?? string.Empty;
+                }
 
+                playerDirections = playerDirections.ToUpper();
                 // Check if the player's move is valid
                 bool isValidPosition = Board.IsValidMove(CurrentPlayerTurn, playerDirections);
                 if (isValidPosition)
@@ -56,6 +67,10 @@ namespace gem_hunters
                     // If the move is valid, move the player and collect gems if any
                     CurrentPlayerTurn.Move(playerDirections);
                     Board.CollectGem(CurrentPlayerTurn);
+                }
+                else
+                {
+                    Console.WriteLine("\nYou cannot move onto or through squares containing obstacles or another player!");
                 }
 
                 // Display the updated game board
@@ -65,6 +80,29 @@ namespace gem_hunters
 
             // Announce the winner
             AnnounceWinner();
+        }
+
+        /// <summary>
+        /// Validate user input from console.
+        /// </summary>
+        /// <param name="userInput">Received input on console.</param>
+        /// <returns></returns>
+        private bool IsValidUserInput(string userInput)
+        {
+            userInput = userInput.ToUpper();
+            switch (userInput)
+            {
+                case "U":
+                    return true;
+                case "D":
+                    return true;
+                case "R":
+                    return true;
+                case "L":
+                    return true;
+                default :
+                    return false;
+            }
         }
 
         /// <summary>
@@ -79,13 +117,13 @@ namespace gem_hunters
             if (TotalTurns % 2 != 0)
             {
                 CurrentPlayerTurn = Player1;
-                Console.Write("Player 1 turn: ");
             }
             else
             {
                 CurrentPlayerTurn = Player2;
-                Console.Write("Player 2 turn: ");
             }
+
+            Console.Write($"\n{CurrentPlayerTurn.Name}'s turn({CurrentPlayerTurn.Alias}). Please enter (U-Up, D-Down, L-Left, R-Right): ");
         }
 
         /// <summary>
@@ -99,22 +137,25 @@ namespace gem_hunters
         /// </summary>
         public void AnnounceWinner()
         {
+
+            Console.WriteLine("\n****** Game Over ******");
+
             // Display the number of gems collected by each player
-            Console.WriteLine($"Collected gems by {Player1.Name} : {Player1.GemCount}");
-            Console.WriteLine($"Collected gems by {Player2.Name} : {Player2.GemCount}");
+            Console.WriteLine($"\nCollected gems by {Player1.Name} : {Player1.GemCount}");
+            Console.WriteLine($"\nCollected gems by {Player2.Name} : {Player2.GemCount}");
 
             // Determine and display the winner or if it's a tie
             if (Player1.GemCount == Player2.GemCount)
             {
-                Console.WriteLine("It's a tie!");
+                Console.WriteLine("\nIt's a tie!");
             }
             else if (Player1.GemCount > Player2.GemCount)
             {
-                Console.WriteLine($"{Player1.Name} is the winner!");
+                Console.WriteLine($"\n{Player1.Name} is the winner!");
             }
             else
             {
-                Console.WriteLine($"{Player2.Name} is the winner!");
+                Console.WriteLine($"\n{Player2.Name} is the winner!");
             }
         }
     }
