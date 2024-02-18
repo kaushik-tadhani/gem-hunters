@@ -9,9 +9,11 @@ namespace gem_hunters
 {
     public class Board
     {
+        // Represents the grid of cells
         public Cell[,] Grid { get; set; }
 
-        public Board() 
+        // Constructor initializes the board
+        public Board()
         {
             // Create a 6x6 grid of cells
             Grid = new Cell[6, 6];
@@ -29,14 +31,12 @@ namespace gem_hunters
             Grid[0, 0] = new Cell("P1");
             Grid[5, 5] = new Cell("P2");
 
+            // Place gems and obstacles
             PlaceGems();
             PlaceObstacles();
-
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        // Places gems randomly on the board
         private void PlaceGems()
         {
             // Place gems randomly until 7 gems are placed
@@ -58,9 +58,7 @@ namespace gem_hunters
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
+        // Places obstacles randomly on the board
         private void PlaceObstacles()
         {
             // Place obstacles randomly until 7 obstacles are placed
@@ -83,10 +81,7 @@ namespace gem_hunters
             }
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
+        // Displays the current state of the board
         public void Display()
         {
             for (int i = 0; i < 6; i++)
@@ -101,11 +96,12 @@ namespace gem_hunters
         }
 
         /// <summary>
-        /// 
+        /// Checks if a move is valid for a player in a given direction
         /// </summary>
-        /// <param name="player"></param>
-        /// <param name="direction"></param>
-        public bool IsValidMove(Player player, string direction) 
+        /// <param name="player">Current player</param>
+        /// <param name="direction">Direction of movement</param>
+        /// <returns>Returns true if the move is valid or there is not an obstacle, otherwise false.</returns>
+        public bool IsValidMove(Player player, string direction)
         {
             Position position = player.Position;
             int x = position.X;
@@ -116,37 +112,39 @@ namespace gem_hunters
                     x = Math.Max(0, x - 1);
                     break;
                 case "D":
-                    x = Math.Max(0, x + 1);
+                    x = Math.Min(5, x + 1);
                     break;
                 case "L":
                     y = Math.Max(0, y - 1);
                     break;
                 case "R":
-                    y = Math.Max(0, y + 1);
+                    y = Math.Min(5, y + 1);
                     break;
                 default:
-                    Console.WriteLine("Invalid input. Please try again!!");
+                    Console.WriteLine("Invalid input. You miss your turn !!!");
                     break;
             }
 
+            // Ensure the position is within matrix edges
             if (x > 5) x = 5;
             if (y > 5) y = 5;
 
+            // Check if the move is valid (not an obstacle)
             bool isValidMove = Grid[x, y].Occupant != "O";
 
             if (isValidMove)
             {
+                // Update the previous cell's occupant to empty
                 Grid[position.X, position.Y].Occupant = "-";
-                player.Position = new Position(x, y);
             }
 
             return isValidMove;
         }
 
         /// <summary>
-        /// 
+        /// Checks and collects gem at the player's position
         /// </summary>
-        /// <param name="player"></param>
+        /// <param name="player">Current player</param>
         public void CollectGem(Player player)
         {
             Position position = player.Position;
@@ -154,7 +152,6 @@ namespace gem_hunters
             {
                 player.GemCount++;
             }
-
             Grid[position.X, position.Y].Occupant = player.Name;
         }
     }
