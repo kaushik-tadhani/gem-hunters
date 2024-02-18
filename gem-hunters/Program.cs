@@ -7,7 +7,6 @@ class GemHunters
     static public void Main(string[] args)
     {
         Game game = new Game();
-
-        game.Board.Display();
+        game.Start();
     }
 }

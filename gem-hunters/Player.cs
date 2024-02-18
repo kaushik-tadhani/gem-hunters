@@ -21,6 +21,9 @@ namespace gem_hunters
             GemCount = 0;
         }
 
-        public void Move(char direction) { }
+        public void Move(char direction) 
+        { 
+        
+        }
     }
 }
