@@ -13,18 +13,18 @@
             // Create a 6x6 grid of cells
             Grid = new Cell[6, 6];
 
-            // Initialize each cell with an empty string "-"
+            // Initialize each cell with an empty space
             for (int i = 0; i < 6; i++)
             {
                 for (int j = 0; j < 6; j++)
                 {
-                    Grid[i, j] = new Cell("-");
+                    Grid[i, j] = new Cell(GameElement.EMPTY_SPACE);
                 }
             }
 
             // Place Player 1 at (0, 0) and Player 2 at (5, 5)
-            Grid[0, 0] = new Cell("P1");
-            Grid[5, 5] = new Cell("P2");
+            Grid[0, 0] = new Cell(GameElement.PLAYER_1_ALIAS);
+            Grid[5, 5] = new Cell(GameElement.PLAYER_2_ALIAS);
 
             // Place gems and obstacles
             PlaceGems();
@@ -36,10 +36,10 @@
         /// </summary>
         private void PlaceGems()
         {
-            // Place gems randomly until 7 gems are placed
+            // Place gems randomly until all gems are placed
             int totalGemsPlaced = 0;
             Random random = new Random();
-            while (totalGemsPlaced != 7)
+            while (totalGemsPlaced != GameElement.TOTAL_GEM)
             {
                 int x = random.Next(0, 6);
                 int y = random.Next(0, 6);
@@ -47,9 +47,9 @@
                 Cell cell = Grid[x, y];
 
                 // If the cell is empty and not occupied by a player, place a gem
-                if (cell.Occupant == "-" && cell.Occupant != "P1" && cell.Occupant != "P2")
+                if (cell.Occupant == GameElement.EMPTY_SPACE && cell.Occupant != GameElement.PLAYER_1_ALIAS && cell.Occupant != GameElement.PLAYER_2_ALIAS)
                 {
-                    Grid[x, y] = new Cell("G");
+                    Grid[x, y] = new Cell(GameElement.GEM);
                     totalGemsPlaced++;
                 }
             }
@@ -60,10 +60,10 @@
         /// </summary>
         private void PlaceObstacles()
         {
-            // Place obstacles randomly until 7 obstacles are placed
+            // Place obstacles randomly until all obstacles are placed
             int totalObstaclesPlaced = 0;
             Random random = new Random();
-            while (totalObstaclesPlaced != 7)
+            while (totalObstaclesPlaced != GameElement.TOTAL_OBSTACLE)
             {
                 // Ensure that obstacles are not placed at the edges to avoid surrounding players
                 int x = random.Next(1, 5);
@@ -72,9 +72,9 @@
                 Cell cell = Grid[x, y];
 
                 // If the cell is empty and not occupied by a player, place an obstacle
-                if (cell.Occupant == "-" && cell.Occupant != "P1" && cell.Occupant != "P2")
+                if (cell.Occupant == GameElement.EMPTY_SPACE && cell.Occupant != GameElement.PLAYER_1_ALIAS && cell.Occupant != GameElement.PLAYER_2_ALIAS)
                 {
-                    Grid[x, y] = new Cell("O");
+                    Grid[x, y] = new Cell(GameElement.OBSTACLE);
                     totalObstaclesPlaced++;
                 }
             }
@@ -110,16 +110,16 @@
             int y = position.Y;
             switch (direction)
             {
-                case "U":
+                case GameMovement.UP:
                     x = Math.Max(0, x - 1);
                     break;
-                case "D":
+                case GameMovement.DOWN:
                     x = Math.Min(5, x + 1);
                     break;
-                case "L":
+                case GameMovement.LEFT:
                     y = Math.Max(0, y - 1);
                     break;
-                case "R":
+                case GameMovement.RIGHT:
                     y = Math.Min(5, y + 1);
                     break;
                 default:
@@ -132,12 +132,12 @@
             if (y > 5) y = 5;
 
             // Check if the move is valid (not an obstacle)
-            bool isValidMove = Grid[x, y].Occupant != "O" && !Grid[x, y].Occupant.Contains('P');
+            bool isValidMove = Grid[x, y].Occupant != GameElement.OBSTACLE && !Grid[x, y].Occupant.Contains('P');
 
             if (isValidMove)
             {
                 // Update the previous cell's occupant to empty
-                Grid[position.X, position.Y].Occupant = "-";
+                Grid[position.X, position.Y].Occupant = GameElement.EMPTY_SPACE;
             }
 
             return isValidMove;
@@ -150,7 +150,7 @@
         public void CollectGem(Player player)
         {
             Position position = player.Position;
-            if (Grid[position.X, position.Y].Occupant == "G")
+            if (Grid[position.X, position.Y].Occupant == GameElement.GEM)
             {
                 player.GemCount++;
                 Console.WriteLine($"\nYeah! {player.Name} got a gem.");

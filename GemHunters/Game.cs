@@ -16,10 +16,10 @@
         public Game(string player1Name, string player2Name)
         {
             // Initialize Player 1 at position (0, 0)
-            Player1 = new Player(player1Name, "P1", new Position(0, 0));
+            Player1 = new Player(player1Name, GameElement.PLAYER_1_ALIAS, new Position(0, 0));
 
             // Initialize Player 2 at position (5, 5)
-            Player2 = new Player(player2Name, "P2", new Position(5, 5));
+            Player2 = new Player(player2Name, GameElement.PLAYER_2_ALIAS, new Position(5, 5));
 
             // Initialize the total number of turns to 0
             TotalTurns = 0;
@@ -86,13 +86,13 @@
             userInput = userInput.ToUpper();
             switch (userInput)
             {
-                case "U":
+                case GameMovement.UP:
                     return true;
-                case "D":
+                case GameMovement.DOWN:
                     return true;
-                case "R":
+                case GameMovement.RIGHT:
                     return true;
-                case "L":
+                case GameMovement.LEFT:
                     return true;
                 default :
                     return false;
@@ -121,10 +121,10 @@
         }
 
         /// <summary>
-        /// Method to check if the game is over. The game ends if the total number of turns reaches 30 or if the total number of collected gems by both players equals 7.
+        /// Method to check if the game is over. The game ends if the total number of turns finished or if the total number of collected gems by both players.
         /// </summary>
         /// <returns>Returns true if the game is over, otherwise false.</returns>
-        public bool IsGameOver() => TotalTurns == 30 || (Player1.GemCount + Player2.GemCount) == 7;
+        public bool IsGameOver() => TotalTurns == GameElement.TOTAL_PLAYER_TURNS || (Player1.GemCount + Player2.GemCount) == GameElement.TOTAL_GEM;
 
         /// <summary>
         /// Method to announce the winner

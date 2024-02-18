@@ -36,16 +36,16 @@
             // Update coordinates based on the direction
             switch (direction)
             {
-                case "U":
+                case GameMovement.UP:
                     x = Math.Max(0, x - 1);
                     break;
-                case "D":
+                case GameMovement.DOWN:
                     x = Math.Min(5, x + 1);
                     break;
-                case "L":
+                case GameMovement.LEFT:
                     y = Math.Max(0, y - 1);
                     break;
-                case "R":
+                case GameMovement.RIGHT:
                     y = Math.Min(5, y + 1);
                     break;
                 default:
