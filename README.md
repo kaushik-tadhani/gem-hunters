@@ -1,6 +1,10 @@
 # "Gem Hunters" Game (Console Edition)
 A console-based 2D game called "Gem Hunters" where players compete to collect the most gems within a set number of turns.
 
+## Explanation video:
+["Gem Hunters" Game (Console Edition) Youtube Video by Kaushik Tadhani](https://www.youtube.com/watch?v=v6opQT6cIjc)
+
+
 ## Board Size:
 A 6x6 square board.
 
